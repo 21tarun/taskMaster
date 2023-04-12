@@ -16,6 +16,7 @@ const transporter = nodemailer.createTransport({
 
 
 const createProject=async function(req,res){
+  try{
     let data=req.body
     if(Object.keys(data).length==0)return res.status(400).send({status:false,message:"body is required"})
     console.log(data.userId)
@@ -36,48 +37,58 @@ const createProject=async function(req,res){
     projects.push(saveData._id)
     await userModel.findByIdAndUpdate(data.userId,{projects:projects})
 
-
-
     
+  }
+  catch(err){
+    res.status(500).send({status:false,message:err.msg})
+  }
 
-    
 
 
 }
 
 const getProject=async function(req,res){
-    const projectId= req.params.projectId
-    let flag=false
-    console.log(projectId)
-    if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(400).send({ status: false, message: "invalid projectId" })
-    
+  try{
+        const projectId= req.params.projectId
+        let flag=false
+        console.log(projectId)
+        if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(400).send({ status: false, message: "invalid projectId" })
+        
 
-    const project =await projectModel.findOne({_id:projectId,isDeleted:false}).populate([{
-      path: 'taskList',
-      model: 'tasks'
-  }, {
-      path: 'userId',
-      model: 'user'
-  }])
-  
-    if(!project) return res.status(404).send({status:false,message:"project not found"})
+        const project =await projectModel.findOne({_id:projectId,isDeleted:false}).populate([{
+          path: 'taskList',
+          model: 'tasks'
+      }, {
+          path: 'userId',
+          model: 'user'
+      }])
+      
+        if(!project) return res.status(404).send({status:false,message:"project not found"})
 
-    const user= await userModel.findById(req.userId)
-    if(!user)return res.status(404).send({status:false,message:"user not found"})
+        const user= await userModel.findById(req.userId)
+        if(!user)return res.status(404).send({status:false,message:"user not found"})
 
-    let members=project.members
-    
-    // authorisation
-    if(req.userId!=project.userId._id && !members.includes(user.email) )return res.status(403).send({status:false,message:"you are not authorised to open this project"})
-    if(req.userId==project.userId._id )flag=true
-    
+        let members=project.members
+        
+        // authorisation
+        if(req.userId!=project.userId._id && !members.includes(user.email) )return res.status(403).send({status:false,message:"you are not authorised to open this project"})
+        if(req.userId==project.userId._id )flag=true
+        
 
 
-    res.status(200).send({status:true,message:"success",data:project,flag:flag})
+        res.status(200).send({status:true,message:"success",data:project,flag:flag})
+
+
+  }
+  catch(err){
+    res.status(500).send({status:false,message:err.msg})
+
+  }
 
 }
 
 const getProjectOnMembers=async function(req,res){
+  try{
     const data =req.body
     if(!data.email) return res.status(400).send({status:false,message:"email is required"})
     if (!validator.isEmail(data.email)) return res.status(400).send({ status: false, message: "please enter valid email address!" })
@@ -86,10 +97,17 @@ const getProjectOnMembers=async function(req,res){
 
     res.status(200).send({status:true,message:"data fetched successfully",data:projects})
 
+  }
+  catch(err){
+    res.status(500).send({status:false,message:err.msg})
+
+  }
+
 
 }
 
 const addMember =async function(req,res){
+  try{
     const data=req.body
     if(Object.keys(data).length==0)return res.status(400).send({status:false,message:"body is required"})
     
@@ -142,43 +160,59 @@ const addMember =async function(req,res){
      await projectModel.findOneAndUpdate({_id:data.projectId},{members:members})
 
 
-
-
+  }
+  catch(err){
+    res.status(500).send({status:false,message:err.msg})
+  }
 }
 const deleteProject=async function(req,res){
-  let projectId=req.body.projectId
-  if(!projectId)return res.status(400).send({status:false,message:"projectId is required"})
-  if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(400).send({ status: false, message: "invalid projectId" })
+  try{
+    let projectId=req.body.projectId
+    if(!projectId)return res.status(400).send({status:false,message:"projectId is required"})
+    if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(400).send({ status: false, message: "invalid projectId" })
+    
+    let project =await projectModel.findOne({_id:projectId,isDeleted:false})
+    if(!project) return res.status(400).send({status:false,message:"project not found"})
   
-  let project =await projectModel.findOne({_id:projectId,isDeleted:false})
-  if(!project) return res.status(400).send({status:false,message:"project not found"})
+    //authorisation
+    if(project.userId!=req.userId)return res.status(403).send({status:false,message:"you can not delete this project"})
+    
+    await projectModel.findByIdAndUpdate(projectId,{isDeleted:true})
+    
+    res.status(200).send({status:true,message:"successfully deleted"})
 
-  //authorisation
-  if(project.userId!=req.userId)return res.status(403).send({status:false,message:"you can not delete this project"})
-  
-  await projectModel.findByIdAndUpdate(projectId,{isDeleted:true})
-  
-  res.status(200).send({status:true,message:"successfully deleted"})
+  }
+  catch(err){
+    res.status(500).send({status:false,message:err.msg})
+
+  }
   
 
 }
 
 const editProject= async function(req,res){
-  const projectId=req.body.projectId
-  const name=req.body.name
-  if(!name)return res.status(400).send({status:false,message:"name is required"})
-  if(!projectId)return res.status(400).send({status:false,message:"projectId is required"})
-  if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(400).send({ status: false, message: "invalid projectId" })
+  try{
+    const projectId=req.body.projectId
+    const name=req.body.name
+    if(!name)return res.status(400).send({status:false,message:"name is required"})
+    if(!projectId)return res.status(400).send({status:false,message:"projectId is required"})
+    if (!mongoose.Types.ObjectId.isValid(projectId)) return res.status(400).send({ status: false, message: "invalid projectId" })
+    
+    let project =await projectModel.findOne({_id:projectId,isDeleted:false})
+    if(!project) return res.status(400).send({status:false,message:"project not found"})
   
-  let project =await projectModel.findOne({_id:projectId,isDeleted:false})
-  if(!project) return res.status(400).send({status:false,message:"project not found"})
+    //authorisation
+    if(project.userId!=req.userId)return res.status(403).send({status:false,message:"you can not delete this project"})
+    
+    await projectModel.findByIdAndUpdate(projectId,{name:name})
+    
+    res.status(200).send({status:true,message:"successfully updated"})
 
-  //authorisation
-  if(project.userId!=req.userId)return res.status(403).send({status:false,message:"you can not delete this project"})
-  
-  await projectModel.findByIdAndUpdate(projectId,{name:name})
-  
-  res.status(200).send({status:true,message:"successfully updated"})
+  }
+  catch(err){
+    res.status(500).send({status:false,message:err.msg})
+
+  }
 
 }
 

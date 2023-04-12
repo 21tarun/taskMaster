@@ -4,6 +4,7 @@ const userController =require("../controllers/userController")
 const projectController=require("../controllers/projectController")
 const taskController=require('../controllers/taskController')
 const middlewares =require('../middlewares/auth')
+const commentController=require('../controllers/commentController')
 
 router.get("/",function(req,res){
     res.send({message:"all are good"})
@@ -20,11 +21,15 @@ router.get("/project/:projectId",middlewares.authentication,projectController.ge
 router.post("/createTask",middlewares.authentication,taskController.createTask)
 router.put("/editTask",middlewares.authentication,taskController.editTask)
 router.delete("/deleteTask",middlewares.authentication,taskController.deleteTask)
+router.post('/getTaskById',middlewares.authentication,taskController.getTaskById)
 
 router.post("/addMember",middlewares.authentication,projectController.addMember)
 router.post('/getProjectOnMembers',middlewares.authentication,projectController.getProjectOnMembers)
 router.delete('/deleteProject',middlewares.authentication,projectController.deleteProject)
 router.put('/editProject',middlewares.authentication,projectController.editProject)
+
+router.post("/createComment",middlewares.authentication,commentController.createComment)
+router.put("/deleteComment",middlewares.authentication,commentController.deleteComment)
 
 
 module.exports=router

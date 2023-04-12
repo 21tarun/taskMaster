@@ -2,11 +2,13 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import {Button,Modal} from 'react-bootstrap'
 
-function AddTask({projectId}) {
+function AddTask({projectId,members,userEmail}) {
     let [name,setName]=React.useState("")
     let [show,setShow]=React.useState(false)
+    let [assignTo,setAssignTo]=React.useState("")
     // let [description,setDescription]=React.useState("")
     let  navigate =useNavigate()
+    console.log("members is",members)
 
     let token = ""
     let userId=""
@@ -14,12 +16,13 @@ function AddTask({projectId}) {
         token = JSON.parse(localStorage.getItem('login2')).token
         userId= JSON.parse(localStorage.getItem('login2')).userId
     }
+
     
     function addTask(){
         if(!name) return alert("name required")
         // if(!description) return alert("description required")
         
-        let data={name:name,projectId:projectId}
+        let data={name:name,projectId:projectId,assignTo:assignTo}
         fetch("http://localhost:4000/createTask",{
             method:"POST",
             headers:{
@@ -61,8 +64,21 @@ function AddTask({projectId}) {
 
         <Modal.Body>
         <div class="form-outline mb-4">
-            <input type="text" id="form2Example1" class="form-control" onChange={(e)=>{setName(e.target.value)}} />
             <label class="form-label" for="form2Example1">task  Name</label>
+            <input type="text" id="form2Example1" class="form-control" onChange={(e)=>{setName(e.target.value)}} /> <br/>
+            <label class="form-label" for="form2Example1">task assign to</label>
+            <select name="cars" id="cars" onChange={(e)=>{setAssignTo(e.target.value)}}>
+                <option value="">Select</option>
+                <option value={userEmail}>You</option>
+
+                {
+                    members.map(x=>
+                        <option value={x}>{x}</option>
+                    )
+                }
+
+            </select>
+            
         </div>
         </Modal.Body>
 

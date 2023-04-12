@@ -12,6 +12,18 @@ const taskSchema=new mongoose.Schema({
     projectId:{
         type:objectId
     },
+    assignTo:{
+        type:String
+    },
+    comments:{
+        type:[objectId],
+        ref:'comment'
+
+    },
+    totalComment:{
+        type:Number,
+        default:0
+    },
 
     isDeleted:{
         type:Boolean,
