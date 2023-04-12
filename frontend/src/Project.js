@@ -34,7 +34,7 @@ function Project() {
     }
     
     React.useEffect(()=>{
-        fetch(`http://localhost:4000/project/${params.projectId}`,{
+        fetch(`https://agreeable-small-study.glitch.me/project/${params.projectId}`,{
             headers:{
 
                 'x-api-key':token
@@ -64,7 +64,7 @@ function Project() {
         })
     },[])
     React.useEffect(()=>{
-        fetch("http://localhost:4000/getUserProjects",{
+        fetch("https://agreeable-small-study.glitch.me/getUserProjects",{
             headers:{
                 'x-api-key':token
             }
@@ -92,7 +92,7 @@ function Project() {
     function dragToProgress(id,assignTo){
         if(assignTo!=userEmail && userEmail!=projectUserEmail)return alert("you can not dragged")
         let data={id:id,status:'InProgress'}
-        fetch("http://localhost:4000/editTask",{
+        fetch("https://agreeable-small-study.glitch.me/editTask",{
             method:"PUT",
             headers:{
                 'Content-type': 'application/json',
@@ -115,7 +115,7 @@ function Project() {
     function dragToCompleted(id,assignTo){
         if(assignTo!=userEmail && userEmail!=projectUserEmail)return alert("you can not dragged")
         let data={id:id,status:'Completed'}
-        fetch("http://localhost:4000/editTask",{
+        fetch("https://agreeable-small-study.glitch.me/editTask",{
             method:"PUT",
             headers:{
                 'Content-type': 'application/json',
@@ -138,7 +138,7 @@ function Project() {
     function dragToDelete(id,assignTo){
         if(assignTo!=userEmail && userEmail!=projectUserEmail)return alert("you can not dragged")
         let data={id:id}
-        fetch("http://localhost:4000/deleteTask",{
+        fetch("https://agreeable-small-study.glitch.me/deleteTask",{
             method:"DELETE",
             headers:{
                 'Content-type': 'application/json',
@@ -161,7 +161,7 @@ function Project() {
     function getComments(taskId,name){
         let data={"taskId":taskId}
         setTaskId(taskId)
-        fetch("http://localhost:4000/getTaskById",{
+        fetch("https://agreeable-small-study.glitch.me/getTaskById",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
@@ -191,7 +191,7 @@ function Project() {
     }
     function addComment(){
         let data={taskId:taskId,message:msg,userId:userId}
-        fetch("http://localhost:4000/createComment",{
+        fetch("https://agreeable-small-study.glitch.me/createComment",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
@@ -220,7 +220,7 @@ function Project() {
     }
     function deleteComment(commentId){
         let data={commentId:commentId,taskId:taskId}
-        fetch("http://localhost:4000/deleteComment",{
+        fetch("https://agreeable-small-study.glitch.me/deleteComment",{
             method:"PUT",
             headers:{
                 'Content-type': 'application/json',

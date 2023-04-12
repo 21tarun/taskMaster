@@ -24,7 +24,7 @@ function Home() {
     React.useEffect(() => {
 
 
-        fetch("http://localhost:4000/getUserProjects", {
+        fetch("https://agreeable-small-study.glitch.me/getUserProjects", {
             headers: {
 
                 'x-api-key': token
@@ -39,7 +39,7 @@ function Home() {
                             setData(res.data.projects)
                             setUserName(res.data.name)
                             let temp={email:res.data.email}
-                            fetch("http://localhost:4000/getProjectOnMembers", {
+                            fetch("https://agreeable-small-study.glitch.me/getProjectOnMembers", {
                                 method:"POST",
                                 headers: {
                                     'Content-type': 'application/json',
@@ -80,7 +80,7 @@ function Home() {
 
     function addProject(){
         let data1={"userId":userId,"name":name}
-        fetch("http://localhost:4000/createProject",{
+        fetch("https://agreeable-small-study.glitch.me/createProject",{
             method:'POST',
             headers:{
                 // 'Content-type': 'multipart/form-data',
@@ -117,7 +117,7 @@ function Home() {
 
     function deleteProject(id){
         let data1={projectId:id}
-        fetch("http://localhost:4000/deleteProject",{
+        fetch("https://agreeable-small-study.glitch.me/deleteProject",{
             method:'DELETE',
             headers:{
                 // 'Content-type': 'multipart/form-data',
@@ -152,7 +152,7 @@ function Home() {
 
     function editProject(){
         let data1={projectId:editId,name:name}
-        fetch("http://localhost:4000/editProject",{
+        fetch("https://agreeable-small-study.glitch.me/editProject",{
             method:'PUT',
             headers:{
                 // 'Content-type': 'multipart/form-data',

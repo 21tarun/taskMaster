@@ -10,7 +10,7 @@ function SignUp() {
     let data={name,email,password}
 
     function register(){
-        fetch("http://localhost:4000/createUser",{
+        fetch("https://agreeable-small-study.glitch.me/createUser",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
@@ -23,7 +23,7 @@ function SignUp() {
         .then(res=>{
             if(res.status==true){
                 data={email,password}
-                fetch("http://localhost:4000/login",{
+                fetch("https://agreeable-small-study.glitch.me/login",{
                     method:"POST",
                     headers:{
                         'Content-type': 'application/json',

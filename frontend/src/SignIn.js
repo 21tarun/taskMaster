@@ -8,7 +8,7 @@ function SignIn() {
     const navigate =useNavigate()
     let data={email,password}
     function login(){
-        fetch("http://localhost:4000/login",{
+        fetch("https://agreeable-small-study.glitch.me/login",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',

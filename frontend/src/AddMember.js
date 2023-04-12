@@ -21,7 +21,7 @@ function AddMember({projectId}) {
         // if(!description) return alert("description required")
         
         let data={email:email,projectId:projectId,userId:userId}
-        fetch("http://localhost:4000/addMember",{
+        fetch("https://agreeable-small-study.glitch.me/addMember",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
