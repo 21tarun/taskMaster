@@ -23,15 +23,17 @@ function Project() {
     let navigate =useNavigate()
     let params=useParams()
     let userId
-    var userName=""
+    let userName=""
     let token
     if(!localStorage.getItem('login2')) token=""
     if(localStorage.getItem('login2')){
+        
         token=JSON.parse(localStorage.getItem('login2')).token
         userId=JSON.parse(localStorage.getItem('login2')).userId
         userName=JSON.parse(localStorage.getItem('login2')).name
 
     }
+    console.log("userName",userName)
     
     React.useEffect(()=>{
         fetch(`https://agreeable-small-study.glitch.me/project/${params.projectId}`,{

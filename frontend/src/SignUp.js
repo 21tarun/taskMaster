@@ -37,7 +37,7 @@ function SignUp() {
                     if(res.status==true){
                         console.log(res)
                         localStorage.setItem('login2',JSON.stringify({
-                            login:res.name,
+                            name:res.name,
                             token:res.token,
                             userId:res.userId
         
