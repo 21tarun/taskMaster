@@ -20,11 +20,11 @@ function Home() {
         userId= JSON.parse(localStorage.getItem('login2')).userId
     }
     console.log(token,userId)
-
+    console.log(process.env.REACT_APP_BACKEND_BASEURL+"/getUserProjects")
     React.useEffect(() => {
 
 
-        fetch("https://agreeable-small-study.glitch.me/getUserProjects", {
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/getUserProjects", {
             headers: {
 
                 'x-api-key': token
@@ -39,7 +39,7 @@ function Home() {
                             setData(res.data.projects)
                             setUserName(res.data.name)
                             let temp={email:res.data.email}
-                            fetch("https://agreeable-small-study.glitch.me/getProjectOnMembers", {
+                            fetch(process.env.REACT_APP_BACKEND_BASEURL+"/getProjectOnMembers", {
                                 method:"POST",
                                 headers: {
                                     'Content-type': 'application/json',
@@ -51,7 +51,7 @@ function Home() {
                                 .then((result) => {
                                     result.json()
                                         .then((res1) => {
-                                            // console.log(res1)
+                                
                                             if (res1.status == true) {
                                                 setData1(res1.data)
                                             }
@@ -80,7 +80,7 @@ function Home() {
 
     function addProject(){
         let data1={"userId":userId,"name":name}
-        fetch("https://agreeable-small-study.glitch.me/createProject",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/createProject",{
             method:'POST',
             headers:{
                 // 'Content-type': 'multipart/form-data',
@@ -117,7 +117,7 @@ function Home() {
 
     function deleteProject(id){
         let data1={projectId:id}
-        fetch("https://agreeable-small-study.glitch.me/deleteProject",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/deleteProject",{
             method:'DELETE',
             headers:{
                 // 'Content-type': 'multipart/form-data',
@@ -152,7 +152,7 @@ function Home() {
 
     function editProject(){
         let data1={projectId:editId,name:name}
-        fetch("https://agreeable-small-study.glitch.me/editProject",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/editProject",{
             method:'PUT',
             headers:{
                 // 'Content-type': 'multipart/form-data',

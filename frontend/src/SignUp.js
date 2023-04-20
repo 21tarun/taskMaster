@@ -10,7 +10,7 @@ function SignUp() {
     let data={name,email,password}
 
     function register(){
-        fetch("https://agreeable-small-study.glitch.me/createUser",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/createUser",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
@@ -23,7 +23,7 @@ function SignUp() {
         .then(res=>{
             if(res.status==true){
                 data={email,password}
-                fetch("https://agreeable-small-study.glitch.me/login",{
+                fetch(process.env.REACT_APP_BACKEND_BASEURL+"/login",{
                     method:"POST",
                     headers:{
                         'Content-type': 'application/json',

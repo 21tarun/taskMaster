@@ -18,6 +18,7 @@ function Project() {
     const [taskId,setTaskId]=React.useState("")
     const [taskName,setTaskName]=React.useState("")
     const [flag,setFlag]=React.useState("")
+    const [status,setStatus]=React.useState("")
     
 
     let navigate =useNavigate()
@@ -36,7 +37,7 @@ function Project() {
     console.log("userName",userName)
     
     React.useEffect(()=>{
-        fetch(`https://agreeable-small-study.glitch.me/project/${params.projectId}`,{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+`/project/${params.projectId}`,{
             headers:{
 
                 'x-api-key':token
@@ -66,7 +67,7 @@ function Project() {
         })
     },[])
     React.useEffect(()=>{
-        fetch("https://agreeable-small-study.glitch.me/getUserProjects",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/getUserProjects",{
             headers:{
                 'x-api-key':token
             }
@@ -91,10 +92,10 @@ function Project() {
     },[])
 
 
-    function dragToProgress(id,assignTo){
+    function drop(e,id,assignTo){
         if(assignTo!=userEmail && userEmail!=projectUserEmail)return alert("you can not dragged")
-        let data={id:id,status:'InProgress'}
-        fetch("https://agreeable-small-study.glitch.me/editTask",{
+        let data={id:id,status:status}
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/editTask",{
             method:"PUT",
             headers:{
                 'Content-type': 'application/json',
@@ -114,56 +115,34 @@ function Project() {
         })
 
     }
-    function dragToCompleted(id,assignTo){
-        if(assignTo!=userEmail && userEmail!=projectUserEmail)return alert("you can not dragged")
-        let data={id:id,status:'Completed'}
-        fetch("https://agreeable-small-study.glitch.me/editTask",{
-            method:"PUT",
-            headers:{
-                'Content-type': 'application/json',
-                'x-api-key':token
-            },
-            body:JSON.stringify(data)
-        })
-        .then((result)=>result.json())
-        .then(res=>{
-            console.log(res)
-            if(res.status==true){
-                alert('Task dragged')
-                window.location.reload(true);
-            }
-            else return alert(res.message)
-            
-        })
 
-    }
-    function dragToDelete(id,assignTo){
-        if(assignTo!=userEmail && userEmail!=projectUserEmail)return alert("you can not dragged")
-        let data={id:id}
-        fetch("https://agreeable-small-study.glitch.me/deleteTask",{
-            method:"DELETE",
-            headers:{
-                'Content-type': 'application/json',
-                'x-api-key':token
-            },
-            body:JSON.stringify(data)
-        })
-        .then((result)=>result.json())
-        .then(res=>{
-            console.log(res)
-            if(res.status==true){
-                alert('Task deleted')
-                window.location.reload(true);
-            }
-            else return alert(res.message)
+    // function dragToDelete(id,assignTo){
+    //     if(assignTo!=userEmail && userEmail!=projectUserEmail)return alert("you can not dragged")
+    //     let data={id:id}
+    //     fetch(process.env.REACT_APP_BACKEND_BASEURL+"/deleteTask",{
+    //         method:"DELETE",
+    //         headers:{
+    //             'Content-type': 'application/json',
+    //             'x-api-key':token
+    //         },
+    //         body:JSON.stringify(data)
+    //     })
+    //     .then((result)=>result.json())
+    //     .then(res=>{
+    //         console.log(res)
+    //         if(res.status==true){
+    //             alert('Task deleted')
+    //             window.location.reload(true);
+    //         }
+    //         else return alert(res.message)
             
-        })
+    //     })
 
-    }
+    // }
     function getComments(taskId,name){
         let data={"taskId":taskId}
         setTaskId(taskId)
-        fetch("https://agreeable-small-study.glitch.me/getTaskById",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/getTaskById",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
@@ -193,7 +172,7 @@ function Project() {
     }
     function addComment(){
         let data={taskId:taskId,message:msg,userId:userId}
-        fetch("https://agreeable-small-study.glitch.me/createComment",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/createComment",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
@@ -222,7 +201,7 @@ function Project() {
     }
     function deleteComment(commentId){
         let data={commentId:commentId,taskId:taskId}
-        fetch("https://agreeable-small-study.glitch.me/deleteComment",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/deleteComment",{
             method:"PUT",
             headers:{
                 'Content-type': 'application/json',
@@ -278,11 +257,11 @@ function Project() {
         </div>
         <div className='task'>
         
-        <div className='open'>
+        <div className='open' onDragOver={(e)=>{e.preventDefault();setStatus("Todo")}}>
             {
                 data.map(x=>
                     x.status=="Todo" && x.isDeleted==false?
-                    <li draggable onDragEnd={(e)=>dragToProgress(x._id,x.assignTo)}>
+                    <li draggable onDragEnd={(e)=>drop(e,x._id,x.assignTo)}>
                         <h4>{x.name}</h4><br/>
                         <p>assignTo: {x.assignTo}</p>
                         <a style={{cursor: "pointer"}} onClick={()=>{getComments(x._id,x.name)}}><p>comments: {x.totalComment}</p></a>
@@ -290,11 +269,11 @@ function Project() {
                 )
             }
         </div>
-        <div className='progres' >
+        <div className='progres' onDragOver={(e)=>{e.preventDefault(); setStatus("InProgress")}}>
             {
                 data.map(x=>
                     x.status=="InProgress" && x.isDeleted==false?
-                    <li  draggable onDragEnd={(e)=>dragToCompleted(x._id,x.assignTo)} >
+                    <li  draggable  onDragEnd={(e)=>drop(e,x._id,x.assignTo)}  >
                         <h4>{x.name}</h4><br/>
                         <p>assignTo: {x.assignTo}</p>
                         <a style={{cursor: "pointer"}} onClick={()=>{getComments(x._id,x.name)}}><p>comments: {x.totalComment}</p></a>
@@ -303,11 +282,11 @@ function Project() {
             }
 
         </div>
-        <div className='completed'>
+        <div className='completed' onDragOver={(e)=>{e.preventDefault();setStatus("Completed")}}>
             {
                 data.map(x=>
                     x.status=="Completed" && x.isDeleted==false?
-                    <li draggable onDragEnd={(e)=>dragToDelete(x._id,x.assignTo)} >
+                    <li draggable onDragEnd={(e)=>drop(e,x._id,x.assignTo)} >
                         <h4>{x.name}</h4><br/>
                         <p >assignTo: {x.assignTo}</p>
                         <a style={{cursor: "pointer"}} onClick={()=>{getComments(x._id,x.name)}}><p>comments: {x.totalComment}</p></a>

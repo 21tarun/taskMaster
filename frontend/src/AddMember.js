@@ -21,7 +21,7 @@ function AddMember({projectId}) {
         // if(!description) return alert("description required")
         
         let data={email:email,projectId:projectId,userId:userId}
-        fetch("https://agreeable-small-study.glitch.me/addMember",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/addMember",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',

@@ -8,7 +8,7 @@ function SignIn() {
     const navigate =useNavigate()
     let data={email,password}
     function login(){
-        fetch("https://agreeable-small-study.glitch.me/login",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/login",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',

@@ -23,7 +23,7 @@ function AddTask({projectId,members,userEmail}) {
         // if(!description) return alert("description required")
         
         let data={name:name,projectId:projectId,assignTo:assignTo}
-        fetch("https://agreeable-small-study.glitch.me/createTask",{
+        fetch(process.env.REACT_APP_BACKEND_BASEURL+"/createTask",{
             method:"POST",
             headers:{
                 'Content-type': 'application/json',
