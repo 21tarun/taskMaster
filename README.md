@@ -43,9 +43,9 @@
 
 
 ## User APIs 
-### POST /createUser
-### POST /login
-### GET / getUserProjects (this api is authenticated)
+- POST /createUser
+- POST /login
+- GET / getUserProjects (this api is authenticated)
 
 
 ## FEATURE 2 - Project
@@ -81,12 +81,12 @@
 ```
 
 ## Project APIs
-### POST /createProject (Authenticated API)
-### GET  /project/:projectId ( Access specific Project with their ID and this api is also authenticated)
-### DELETE /deleteProject (Authenticated API)
-### PUT /editProject ( Authenticated API)
-### POST /addMember ( A admin of the project can add members )
-### POST /getProjectOnMembers (on the basis of email of authenticated person we will get all projects those project "Members List" has that perticular email id)
+- POST /createProject (Authenticated API)
+- GET  /project/:projectId ( Access specific Project with their ID and this api is also authenticated)
+- DELETE /deleteProject (Authenticated API)
+- PUT /editProject ( Authenticated API)
+- POST /addMember ( A admin of the project can add members )
+- POST /getProjectOnMembers (on the basis of email of authenticated person we will get all projects those project "Members List" has that perticular email id)
 
 
 ## FEATURE 3 - Task
@@ -128,10 +128,10 @@
 
 ## Task APIs
 
-### POST /createTask (Authenticated api)
-### PUT /editTask (Authenticated api)
-### DELETE /deleteTask (authenticated api)
-### POST /getTaskById (this is for geting all the comments for that perticular task and this is Authenticated api)
+- POST /createTask (Authenticated api)
+- PUT /editTask (Authenticated api)
+- DELETE /deleteTask (authenticated api)
+- POST /getTaskById (this is for geting all the comments for that perticular task and this is Authenticated api)
 
 
 ## FEATURE 4 - Comment
@@ -159,8 +159,8 @@
 
 ## Comment APIs
 
-### POST /createComment (Authenticated)
-### POST /deleteComment (Authenticated)
+- POST /createComment (Authenticated)
+- POST /deleteComment (Authenticated)
 
 
 
