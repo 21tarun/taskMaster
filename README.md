@@ -6,7 +6,7 @@
 - Admin and  authenticated person that has assigned project can comment to perticular task.
 
 
-## Backend
+# Backend
 
 
 ### Key points
@@ -161,6 +161,20 @@
 
 - POST /createComment (Authenticated)
 - POST /deleteComment (Authenticated)
+
+
+# FrontEnd
+
+- For FrontEnd i used React.js
+
+## Components that i have used to buld frontend for TASK MASTER
+- SignIn ( If user is not Logged In then he/she will get SignIn Component)
+- SignUp 
+- Home ( After completing Authentication we will on Home page from there he/she can access all their projects and also he/she can create new project)
+- Project ( If i want to access specific project then i will be on Project Component)
+- AddMember ( It is the sub Component of Project Component only admin of project can able to access this component)
+- AddTask ( It is also sub component of Project Component only admin of project can able to access this component)
+
 
 
 
